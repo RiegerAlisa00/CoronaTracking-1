@@ -1,0 +1,61 @@
+﻿
+<div class="überschrift">
+  <h1> Corona Tracking App</h1>
+</div>
+
+<div id="homepage">
+  <a routerLink="../login">Anmelden</a>
+
+
+</div>
+<div class="box">
+
+    <h2>Register</h2>
+
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+          <div class="inputBox">
+                <label for="firstName">First Name</label>
+                <input type="text" formControlName="firstName" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.firstName.errors }" />
+                <div *ngIf="submitted && f.firstName.errors" class="invalid-feedback">
+                    <div class = "is-required" *ngIf="f.firstName.errors.required">First Name is required</div>
+                </div>
+          </div>
+          <div class="inputBox">
+                <label for="lastName">Last Name</label>
+                <input type="text" formControlName="lastName" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.lastName.errors }" />
+                <div *ngIf="submitted && f.lastName.errors" class="invalid-feedback">
+
+                    <div class = "is-required" *ngIf="f.lastName.errors.required">Last Name is required</div>
+
+                </div>
+            </div>
+
+            <div class="inputBox">
+                <label for="username">Username</label>
+                <input type="text" formControlName="username" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.username.errors }" />
+                <div *ngIf="submitted && f.username.errors" class="invalid-feedback">
+
+                    <div class = "is-required"  *ngIf="f.username.errors.required">Username is required</div>
+                </div>
+            </div>
+          <div class="inputBox">
+                <label for="password">Password</label>
+                <input type="password" formControlName="password" class="form-control" [ngClass]="{ 'is-invalid': submitted && f.password.errors }" />
+                <div *ngIf="submitted && f.password.errors" class="invalid-feedback">
+                    <div class = "is-required" *ngIf="f.password.errors.required">Password is required</div>
+                    <div class = "is-required" *ngIf="f.password.errors.minlength">Password must be at least 6 characters</div>
+                </div>
+          </div>
+
+                <button [disabled]="loading" class="button-register">
+                    <span  *ngIf="loading" ></span>
+                    Register
+                </button>
+
+
+
+        </form>
+
+
+    </div>
+

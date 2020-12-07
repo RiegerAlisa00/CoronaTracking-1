@@ -1,0 +1,145 @@
+body{
+  color: #000;;
+}
+
+.überschrift
+{
+  text-align: center;
+  color:green;
+  font-family: Calibri;
+}
+
+footer {
+  width: 100%;
+  position: fixed;
+  left:0;
+  bottom: 0;
+  background: darkgreen;
+  height: 100px;
+  font-family: Calibri;
+  color: #FFFFFF;
+  padding: 12px;
+}
+span
+{
+  margin-left: 16px;
+}
+#homepage
+{
+
+  text-align: right;
+}
+a:link, a:visited {
+  background-color: forestgreen;
+  color: white;
+  padding: 14px 25px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+}
+a:hover, a:active {
+  background-color:  green;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.box
+{
+  position: absolute;
+  top: 48%;
+  left:50%;
+  transform: translate(-50%,-50%);
+  width: 700px;
+  padding:80px;
+  background-color: #005ca9;
+  box-sizing: border-box;
+  box-shadow: 0 15px 25px rgba(0,0,0,.5);
+  border-radius: 10px;
+
+}
+
+
+
+
+.box h2
+{
+  margin: 0 0 30px;
+  padding: 0;
+  color: #fff;
+  text-align: center;
+
+}
+.box .inputBox input
+{
+  width: 100%;
+  padding: 10px 0;
+  font-size: 16px;
+  color: #FFFFFF;
+  margin-bottom: 20px;
+  border:none;
+  border-bottom: 1px solid #FFFFFF;
+  outline: none;
+  background: transparent;
+  margin-left:80px;
+  width: 460px;
+
+
+}
+.box .inputBox label
+{
+  position: absolute;
+  left: 0;
+  margin-left: 1%;
+  padding: 10px 0;
+  font-size: 18px;
+  color: #FFFFFF;
+  pointer-events: none;
+  transition: 0.5s;
+  font-family: Calibri;
+
+
+
+}
+.box .inputBox input:focus ~ label,
+.box .inputBox input:valid ~ label
+{
+  left:0;
+  color: white;
+  font-size: 16px;
+  font-family: Calibri;
+
+}
+
+
+.button-register
+{
+  background-color: forestgreen;
+  color: white;
+  padding: 14px 25px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+}
+
+.button-register:hover, button-register:active {
+  background-color:  darkgreen;
+}
+
+
+.inputBox .is-required
+
+{
+  font-family: Calibri;
+  color: red;
+}
