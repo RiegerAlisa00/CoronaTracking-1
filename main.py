@@ -3,18 +3,23 @@ import mysql.connector#Bibliothek mysql wird importiert. Ist für die Verbindung
 import datetime#Bibliothek datetime wird importiert. Ist für die Prüfung vom Geburtsdatum.
 import smtplib#Bibliothek smtplib wird importiert. Ist für den Zugriff und versendung der E-Mails zuständig.
 import random#Bibliothek random wird importiert.Ist für die 5 Stellige Verefezierung für Passwort zurücksetzen.
+import base64#Bibliothek für die Verschlüsselung
+from tkinter import *#Bibliothek für die Obrfläche
 
 
-from tkinter import *
-from tkinter import filedialog
-
-class GUI:
+class GUI:#Klasse der Oberfläche
     def __init__(self,surface):
-        self.backend = Login()
+        self.backend = Backend()#zugriff auf die Klasse Backend
         """ GUI Fenster """
         self.surface = surface
         self.title = 'Coronatracking-App'
         self.surface.title(self.title)
+        #Hier werden alle Labels, Enterys, etc. erstellt die jemals im Programm verwendet wird, ohne ihre Eigenschaft zu bestimmen also Text, Farbe, usw.
+        """ Hauptseit: Listenbox """
+        self.listbox = Listbox(self.surface)
+        self.index = None
+        self.inhalt = None
+        self.scroll = Scrollbar(self.surface,orient=VERTICAL)
 
         #regestrierung
         self.benutzername = Label(self.surface)
@@ -34,6 +39,7 @@ class GUI:
         self.b_save = Button(self.surface)
 
         self.fehler = Label(self.surface)
+        #login
         self.userLabel = Label(self.surface)
         self.userEntry = Entry(self.surface)
         self.passLabel = Label(self.surface)
@@ -42,13 +48,18 @@ class GUI:
         self.b_regestrieren = Button(self.surface)
         self.b_login = Button(self.surface)
         self.b_pswt_return = Button(self.surface)
-
-        self.l_verlauf = Label(self.surface)
+        #startseite
         self.t_verlauf = Label(self.surface)
 
         self.b_logout = Button(self.surface)
 
     def leer(self):
+        #hier werden alle Labels, Enterys, etc. ausgeblendet
+        """ Hauptseit: Listenbox """
+        self.listbox.grid_forget()
+        self.scroll.grid_forget()
+
+        #regestrieren
         self.benutzername.grid_forget()
         self.pswt.grid_forget()
         self.pswt_w.grid_forget()
@@ -66,7 +77,7 @@ class GUI:
         self.b_save.grid_forget()
 
         self.fehler.grid_forget()
-
+        #login
         self.userLabel.grid_forget()
         self.userEntry.grid_forget()
         self.passLabel.grid_forget()
@@ -76,21 +87,22 @@ class GUI:
         self.b_login.grid_forget()
         self.b_pswt_return.grid_forget()
 
-        self.l_verlauf.grid_forget()
+        #startseite
         self.t_verlauf.grid_forget()
         
         self.b_logout.grid_forget()
 
 
     def regestrieren(self):
-        self.leer()
+        self.leer()#ganzer Inhalt des Fensters wird ausgeblendet
+        #der Text der Labels werden geändert
         self.benutzername.config(text='Benutzername:')
         self.pswt.config(text='Passwort:')
         self.pswt_w.config(text='Passwort wiederholen:')
         self.vorname.config(text='Vorname:')
         self.nachname.config(text='Nachname:')
         self.email.config(text='Email:')
-
+        #Labels,Enterys, Buttons werden hier positioniert
         self.benutzername.grid(row=0, column=0)
         self.pswt.grid(row=1, column=0)
         self.pswt_w.grid(row=2, column=0)
@@ -105,7 +117,7 @@ class GUI:
         self.e_nachname.grid(row=4, column=1)
         self.e_email.grid(row=5, column=1)
 
-        self.b_save.config(text='Erstellen', command=self.benutzer_erstellen)
+        self.b_save.config(text='Erstellen', command=self.benutzer_erstellen)#der Text vom Button wird geändert und festgelegt welche Methode aufgerufen wird, wenn der Button geklickt wird
         self.b_save.grid(row=6, column=2)
         self.fehler.grid(row=3, column=5)
         
@@ -113,20 +125,21 @@ class GUI:
 
         
     def benutzer_erstellen(self):
+        #Inahlter der Eingabefelder werden rausgehohlt
         benutzername = self.e_benutzername.get()
         pswt = self.e_pswt.get()
         pswt_w = self.e_pswt_w.get()
         vorname = self.e_vorname.get()
         nachname = self.e_nachname.get()
         email = self.e_email.get()
-
+        #Eingaben werden überprüft
         fehler_text = self.backend.neu(benutzername,pswt,pswt_w,vorname,nachname,email)
         
-        if fehler_text != None:
+        if fehler_text != None:#Gibt es einen Fehler wird die Meldung angezeigt und man kommt nicht weiter
             self.fehler.config(text=fehler_text)
             
             self.regestrieren()
-        else:
+        else:#Inhalte der Eingabefelder werden entleert, Text vom Lable fehler wird geändert, man kommt auf die login Seite zurück
             self.fehler.config(text='')
             self.e_benutzername.delete(0,'end')
             self.e_pswt.delete(0,'end')
@@ -137,24 +150,25 @@ class GUI:
             self.login()
 
     def login(self):
-        self.leer()
+        self.leer()#ganzer Inhalt des Fensters wird ausgeblendet
+        #der Text der Labels werden geändert
         self.userLabel.config(text="Benutzernamen/Email:")
         self.passLabel.config(text="Passwort:")
-
+        #die Labels werden positioniert
         self.userLabel.grid(row=0, column=0)
         self.userEntry.grid(row=0, column=1)
         self.passLabel.grid(row=1, column=0)
         self.passEntry.grid(row=1, column=1)
-
+        #die Eigenschaften der Buttons werden geändert
         self.b_regestrieren.config(text='Regestrieren',command=self.regestrieren)
         self.b_login.config(text='Login',command=self.login_pr)
         self.b_pswt_return.config(text='Passwort zurücksetzen',command=self.pswt_r)
-
+        #die Buttons werden positioniert
         self.b_regestrieren.grid(row=2, column=1)
         self.b_login.grid(row=2, column=0)
         self.b_pswt_return.grid(row=2, column=3)
         self.fehler.grid(row=1, column=4)
-        self.surface.mainloop()
+        self.surface.mainloop()#fenster schließt sich nicht automatisch
     def login_pr(self):
         user = self.userEntry.get()
         pswt = self.passEntry.get()
@@ -172,16 +186,23 @@ class GUI:
             self.main()
     def main(self):
         self.leer()
-        output = self.backend.kundenevent()
-        text = ''
-        for i in output:
-            text = text +i[1]+" am "+str(i[2])+" um "+str(i[3])+"\n"
+        self.listbox.delete(0,'end')#alter Listbox stand wird gelöscht
+
+        """Scrollbar wird zur Listbox hinzugefügt"""
+        self.listbox["yscrollcommand"]=self.scroll.set
+        self.scroll["command"]=self.listbox.yview
         
-        self.l_verlauf.config(text=text)
+        for i in self.backend.kundenevent():#die aktuelle Liste wird in der Listbox angezeigt
+            text = i[1]+" am "+str(i[2])+" um "+str(i[3])
+            self.listbox.insert(END, text)
+        #positionierung der Listbox und Scrollbar
+        self.listbox.grid(row=1,column=1,columnspan=10,sticky=N+E+S+W)
+        self.scroll.grid(row=1,column=10, sticky=E+N+S)
+
         self.t_verlauf.config(text='Verlauf',font = "Helvetica 16 bold italic")
-        self.l_verlauf.grid(row = 2, column=0)
-        self.t_verlauf.grid(row = 1, column=0)
-        self.b_logout.grid(row = 3, column=1)
+ 
+        self.t_verlauf.grid(row = 0, column=1)
+        self.b_logout.grid(row = 3, column=11)
         self.b_logout.config(text='Abmelden',command=self.logout)
     def logout(self):
         self.backend.logout()
@@ -252,11 +273,12 @@ class DB:#Hier passiert alles was mit der DB zutun hat
         self.cur.execute(sql)
         return self.cur.fetchall()
     def verlauf(self,kunden_id):
+        print(kunden_id)
         sql = "SELECT * FROM eventsentry WHERE id IN (SELECT eID FROM kundenevents WHERE kID = {})".format(kunden_id[0][0])
         self.cur.execute(sql)
         return self.cur.fetchall()
 
-class Login:#Hier passiert alles was im hintergrund der Webseite
+class Backend:#Hier passiert alles was im hintergrund der Webseite
     def __init__(self):
         self.db = DB('root','root','localhost','8889','coronatracking')#hier kann ich die Klasse DB verwenden bzw. hier wird sie aufgerufen
         self.id = None
@@ -267,16 +289,23 @@ class Login:#Hier passiert alles was im hintergrund der Webseite
         
         benutzername_email = benutzername_email.strip()#Leerzeichen werden am Anfang und am Ende entfernt
         self.db.connect()#Verbindung zur DB wird erstellt
-        pswd = self.db.select_pswd(benutzername_email)#das Passwort was zum Benutzername/E-Mail passt was in der DB gespeichert wurde wird hier zurückgegeben
-        if len(pswd) != 0:
-            if pswt != pswd[0][0]:#hier wird geschaut ob das Passwort im Eingabefeld das gleiche Passwort ist wie in der DB. Stimmt es nicht kommt eine Fehlermeldung.
+        pswd_sql = self.db.select_pswd(benutzername_email)#das Passwort was zum Benutzername/E-Mail passt was in der DB gespeichert wurde wird hier zurückgegeben
+
+        if len(pswd_sql) != 0:
+            encoded_pswd = pswd_sql[0][0].encode('ascii')
+            encoded_byte = base64.b64decode(encoded_pswd)
+            pswd = encoded_byte.decode('ascii')
+            if pswt != pswd:#hier wird geschaut ob das Passwort im Eingabefeld das gleiche Passwort ist wie in der DB. Stimmt es nicht kommt eine Fehlermeldung.
                 fehler_medlung = "Fehler! Benutzername/E-Mail oder Passwort stimmt nicht."
                 fehlerfrei = ""
                 return fehler_medlung
                 
             
             if fehlerfrei == 'ok':
-                self.id = self.db.select_id(benutzername_email,pswt)
+                print('benutz:',benutzername_email)
+                print(pswd)
+                self.id = self.db.select_id(benutzername_email,pswd_sql[0][0])
+                print('anmelden',self.id)
                 self.db.close()#Verbindung zur DB wird getrennt
         else:
             fehler_medlung = "Fehler! Benutzername/E-Mail oder Passwort stimmt nicht."
@@ -303,7 +332,7 @@ class Login:#Hier passiert alles was im hintergrund der Webseite
         nachname = nachname.strip()#Leerzeichen werden am Anfang und am Ende entfernt
 
         p_email = "^([a-zA-Z0-9]+([-_\.]?[a-zA-Z0-9])+@[a-zA-Z0-9]+([-_\.]?[a-zA-Z0-9])+\.[a-z]{2,4}){0,}$"
-        p_name = "^[a-zA-Z]+$"
+        p_name = "^[a-zA-ZäüöÄÜÖ]+$"
         p_pswd = "^(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}$"
 
         self.db.connect()#verbindung zur DB wird erstellt
@@ -346,7 +375,13 @@ class Login:#Hier passiert alles was im hintergrund der Webseite
        
         
         if fehlerfrei == 'ok':
-            self.db.insert_kunde(benutzername,pswt,vorname,nachname,email)#neues Konot wird erstellt
+
+            pswd_byte = pswt.encode('ascii')
+            encoded_byte = base64.b64encode(pswd_byte)
+            encoded_pswd = encoded_byte.decode('ascii')
+
+
+            self.db.insert_kunde(benutzername,encoded_pswd,vorname,nachname,email)#neues Konot wird erstellt
 
             self.db.close()#Verbindung zur DB wird getrentt
 
@@ -367,7 +402,7 @@ class Login:#Hier passiert alles was im hintergrund der Webseite
 
         #SQL-State wo ich die ID vom Event bekomme was ich auswähle
 
-
+        print(self.id)
         events = self.db.verlauf(self.id)
 
         self.db.close()#Verbindung zur DB wird getrent
