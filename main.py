@@ -53,7 +53,18 @@ class GUI:#Klasse der Oberfläche
 
         self.b_logout = Button(self.surface)
 
-    def leer(self):
+        #Events erstellen (GUI Fenster)
+        self.name = Label(self.surface)
+        self.datum = Label(self.surface)
+        self.zeit = Label(self.surface)
+
+        self.ev_name = Entry(self.surface)
+        self.ev_datum = Entry(self.surface)
+        self.ev_zeit = Entry(self.surface)
+        self.ev_button = Button(self.surface)
+        self.ev_error = Label(self.surface)
+
+    def clear_design(self):
         #hier werden alle Labels, Enterys, etc. ausgeblendet
         """ Hauptseit: Listenbox """
         self.listbox.grid_forget()
@@ -92,33 +103,44 @@ class GUI:#Klasse der Oberfläche
         
         self.b_logout.grid_forget()
 
+        #Events .grid_forget()
+        self.name.grid_forget()
+        self.datum.grid_forget()
+        self.zeit.grid_forget()
+
+        self.ev_name.grid_forget()
+        self.ev_datum.grid_forget()
+        self.ev_zeit.grid_forget()
+        self.ev_button.grid_forget()
+        self.ev_error.grid_forget()
+
 
     def regestrieren(self):
-        self.leer()#ganzer Inhalt des Fensters wird ausgeblendet
+        self.clear_design()#ganzer Inhalt des Fensters wird ausgeblendet
         #der Text der Labels werden geändert
-        self.benutzername.config(text='Benutzername:')
-        self.pswt.config(text='Passwort:')
-        self.pswt_w.config(text='Passwort wiederholen:')
-        self.vorname.config(text='Vorname:')
-        self.nachname.config(text='Nachname:')
-        self.email.config(text='Email:')
+        self.benutzername.config(text='Benutzername:',bg="#005ca9", fg="white")
+        self.pswt.config(text='Passwort:',bg="#005ca9", fg="white")
+        self.pswt_w.config(text='Passwort wiederholen:',bg="#005ca9", fg="white")
+        self.vorname.config(text='Vorname:',bg="#005ca9", fg="white")
+        self.nachname.config(text='Nachname:',bg="#005ca9", fg="white")
+        self.email.config(text='Email:',bg="#005ca9", fg="white")
         #Labels,Enterys, Buttons werden hier positioniert
-        self.benutzername.grid(row=0, column=0)
-        self.pswt.grid(row=1, column=0)
-        self.pswt_w.grid(row=2, column=0)
-        self.vorname.grid(row=3, column=0)
-        self.nachname.grid(row=4, column=0)
-        self.email.grid(row=5, column=0)
+        self.benutzername.grid(row=2, column=1, pady = (20,10),padx = (80))
+        self.pswt.grid(row=4, column=1, pady = (0,10))
+        self.pswt_w.grid(row=6, column=1, pady = (0,10))
+        self.vorname.grid(row=8, column=1, pady = (0,10))
+        self.nachname.grid(row=10, column=1, pady = (0,10))
+        self.email.grid(row=14, column=1, pady = (0,10))
 
-        self.e_benutzername.grid(row=0, column=1)
-        self.e_pswt.grid(row=1, column=1)
-        self.e_pswt_w.grid(row=2, column=1)
-        self.e_vorname.grid(row=3, column=1)
-        self.e_nachname.grid(row=4, column=1)
-        self.e_email.grid(row=5, column=1)
+        self.e_benutzername.grid(row=2, column=2, pady = (20,10))
+        self.e_pswt.grid(row=4, column=2, pady = (0,10))
+        self.e_pswt_w.grid(row=6, column=2, pady = (0,10))
+        self.e_vorname.grid(row=8, column=2, pady = (0,10))
+        self.e_nachname.grid(row=10, column=2, pady = (0,10))
+        self.e_email.grid(row=14, column=2, pady = (0,10))
 
-        self.b_save.config(text='Erstellen', command=self.benutzer_erstellen)#der Text vom Button wird geändert und festgelegt welche Methode aufgerufen wird, wenn der Button geklickt wird
-        self.b_save.grid(row=6, column=2)
+        self.b_save.config(text='Erstellen', command=self.benutzer_erstellen,bg="green")#der Text vom Button wird geändert und festgelegt welche Methode aufgerufen wird, wenn der Button geklickt wird
+        self.b_save.grid(row=18, column=1, pady = (12))
         self.fehler.grid(row=3, column=5)
         
 
@@ -150,23 +172,25 @@ class GUI:#Klasse der Oberfläche
             self.login()
 
     def login(self):
-        self.leer()#ganzer Inhalt des Fensters wird ausgeblendet
+        self.surface.configure(bg="#005ca9")
+        self.surface.geometry("600x400")
+        self.clear_design()#ganzer Inhalt des Fensters wird ausgeblendet
         #der Text der Labels werden geändert
-        self.userLabel.config(text="Benutzernamen/Email:")
-        self.passLabel.config(text="Passwort:")
+        self.userLabel.config(text="Email/Benutzername:",bg="#005ca9", fg="white")
+        self.passLabel.config(text="Passwort:",bg="#005ca9", fg="white")
         #die Labels werden positioniert
-        self.userLabel.grid(row=0, column=0)
-        self.userEntry.grid(row=0, column=1)
-        self.passLabel.grid(row=1, column=0)
-        self.passEntry.grid(row=1, column=1)
+        self.userLabel.grid(row=1, column=0, padx = (50))
+        self.userEntry.grid(row=1, column=1,pady = (20))
+        self.passLabel.grid(row=2, column=0)
+        self.passEntry.grid(row=2, column=1,pady = (10))
         #die Eigenschaften der Buttons werden geändert
-        self.b_regestrieren.config(text='Regestrieren',command=self.regestrieren)
-        self.b_login.config(text='Login',command=self.login_pr)
-        self.b_pswt_return.config(text='Passwort zurücksetzen',command=self.pswt_r)
+        self.b_regestrieren.config(text='Regestrieren',command=self.regestrieren,bg="green")
+        self.b_login.config(text='Login',command=self.login_pr,bg="green")
+        self.b_pswt_return.config(text='Passwort zurücksetzen',command=self.pswt_r,bg="#33ccff")
         #die Buttons werden positioniert
         self.b_regestrieren.grid(row=2, column=1)
-        self.b_login.grid(row=2, column=0)
-        self.b_pswt_return.grid(row=2, column=3)
+        self.b_login.grid(row=4, column=0)
+        self.b_pswt_return.grid(row=3, column=1)
         self.fehler.grid(row=1, column=4)
         self.surface.mainloop()#fenster schließt sich nicht automatisch
     def login_pr(self):
@@ -185,7 +209,7 @@ class GUI:#Klasse der Oberfläche
             self.passEntry.delete(0,'end')
             self.main()
     def main(self):
-        self.leer()
+        self.clear_design()
         self.listbox.delete(0,'end')#alter Listbox stand wird gelöscht
 
         """Scrollbar wird zur Listbox hinzugefügt"""
@@ -209,6 +233,41 @@ class GUI:#Klasse der Oberfläche
         self.login()
     def pswt_r(self):
         pass
+    #Fenster zum erstellen von Events
+    def event_input(self):
+        self.clear_design()
+        self.name.config(text='Name:')
+        self.datum.config(text='Datum:')
+        self.zeit.config(text='Zeit:')
+        self.ev_button.config(text="Event erstellen", command=self.event_erstellen)
+        self.ev_error.config(text="")
+
+        self.name.grid(row=0, column=0)
+        self.datum.grid(row=1, column=0)
+        self.zeit.grid(row=2, column=0)
+
+        self.ev_name.grid(row=0, column=1)
+        self.ev_datum.grid(row=1, column=1)
+        self.ev_zeit.grid(row=2, column=1)
+
+        self.ev_button.grid(row=3, column=1)
+        self.ev_error.grid(row=4, column=0)
+    def event_erstellen(self):
+        #Input für den Eventnamen
+        name = self.ev_name.get()
+        #Input für das Eventdatum (YYYY-MM-DD Format, geht auch mit / oder .)
+        datum = self.ev_datum.get()
+        #Input für die Uhrzeit des Events (24:00 Format)
+        zeit = self.ev_zeit.get()
+
+        #Sind alle Felder ausgefüllt, wird das Event angelegt/erstellt.
+        if name != None and datum != None and zeit != None:
+            print("success")
+            self.backend.evinput(name, datum, zeit)
+        
+        else:
+            self.ev_error.config(text="Die Eingabe ist unvollständig!", fg="red")
+            self.event_input()
 class DB:#Hier passiert alles was mit der DB zutun hat
     def __init__(self,user,pswd,host,port,db):#Hier werden die Informationen übergeben die ich für eine DB verbindung brauche
         self.config = {
@@ -283,8 +342,7 @@ class Backend:#Hier passiert alles was im hintergrund der Webseite
         self.db = DB('root','root','localhost','8889','coronatracking')#hier kann ich die Klasse DB verwenden bzw. hier wird sie aufgerufen
         self.id = None
     def anmelden(self,benutzername_email,pswt):#anmelde funktion
-        # benutzername_email = input('Benutzername/E-Mail: ')#Eingabefeld für Benutzername bzw. E-Mail    #request.POST.get('name_eingabefeld')
-        # pswt = input('Passwort: ')#Eingabefeld für das Passwort     #request.POST.get('name_eingabefeld')
+
         fehlerfrei = "ok"
         
         benutzername_email = benutzername_email.strip()#Leerzeichen werden am Anfang und am Ende entfernt
@@ -315,14 +373,7 @@ class Backend:#Hier passiert alles was im hintergrund der Webseite
        
 
     def neu(self, benutzername,pswt,pswt_w,vorname,nachname,email):
-        # benutzername = input('Benutzername: ')#Eingabefeld vom Benutzernamen    #request.POST.get('name_eingabefeld')
-        # pswt = input('Passwort: ')#Eingabefeld vom Passwort #request.POST.get('name_eingabefeld')
-        # pswt_w = input('Passwort wiederholen: ')#Eingabefeld vom Passwort wiederholen   #request.POST.get('name_eingabefeld')
-        # vorname = input('Vorname: ')#Eingabefeld vom Vornamen   #request.POST.get('name_eingabefeld')
-        # nachname = input('Nachname: ')#Eingabefeld vom Nachname #request.POST.get('name_eingabefeld')
-        # email = input('E-Mail: ')#Eingabefeld vom E-Mail    #request.POST.get('name_eingabefeld')
-        # # geburtsdatum = '2020-11-10'#Eingabefeld vom Geburtsdatum
-        # # telefon = ''#Eingabefeld von der Telefonnummer
+
         fehlerfrei = "ok"
        
 
@@ -491,18 +542,10 @@ class Backend:#Hier passiert alles was im hintergrund der Webseite
         else:
             print('Code ist falsch und kann man jetzt nicht mehr verwenden')
 
-    def evinput(self):
-        #Zurzeit sind nur placeholder Daten drinnen, die müssen dann angepasst werden, sobald es eine Funktion/Weg zur übertragung der DB Daten gibt.
-
-        #Input für den Eventnamen
-        name = ''#request.POST.get('name_eingabefeld')
-        #Input für das Eventdatum (YYYY-MM-DD Format, geht auch mit / oder .)
-        datum = ''#request.POST.get('name_eingabefeld')
-        #Input für die Uhrzeit des Events (24:00 Format)
-        zeit = ''#request.POST.get('name_eingabefeld')
-
+    def evinput(self, name, datum, zeit):
+        
         if datum != None:
-            #Checkt ob das Datum richtig formatiert ist, falls nicht, wird es korregiert.
+            #Checkt ob das Datum richtig formatiert ist, falls nicht, wird es korregiert. (YYYY-MM-DD)
             for i in datum:
                 if i == "/" or i == ".":
                     datum = datum.replace(i, "-")
@@ -513,12 +556,14 @@ class Backend:#Hier passiert alles was im hintergrund der Webseite
                 
             #Falls alle Daten nicht None sind, wird das Event hinzugefügt.
             if date != None and name != None and zeit != None:
-                self.db.connect()#Verbindung zur DB wird erstellt
+                self.db.connect()
                 self.db.eventinsert(name, datum, zeit)
                 self.db.close()
                 
             else:
-                print("Missing Data")
+                fehler = "Die Eingabe ist unvollständig!"
+                return fehler
+                #Popup Fenster das sagt: "Daten Fehlen", am besten so, dass angegeben wird, was genau fehlt.
 
 
     #Funktion um Events aus der Datenbank zu holen.
@@ -549,47 +594,6 @@ class Backend:#Hier passiert alles was im hintergrund der Webseite
 surface = Tk()
 Website = GUI(surface)
 Website.login()
-# abrechen = False
-# # Website.event()
-# while abrechen == False:
-#     a = input("1.)Anmelden\n2.)neues Konto erstellen\n3.)Passwort vergessen\n4.)Beenden\n")
-#     if a == '1':
-#         b = Website.anmelden()
-#         if b == 'ok':
-#             beenden = False
-#             while beenden == False:
-#                 c = input("1.)Corona-Warn-EMail\n2.)Event reservieren\n3.)Verlauf\n4.)Abmelden\n")
-#                 if c == '1':
-#                     Website.mail()
-#                 elif c == '2':
-#                     output = Website.event()
-#                     text = ''
-#                     for i in output:
-#                         text = text + str(i[0])+".)"+i[1]+" am "+str(i[2])+" um "+str(i[3])+"\n"
-#                     event = input(text)
-#                     Website.db.connect()
-#                     Website.db.insert_kundenevent(Website.id,event)
-#                     Website.db.close()
-#                 elif c == '3':
-#                     output = Website.kundenevent()
-#                     text = ''
-#                     for i in output:
-#                         text = text +i[1]+" am "+str(i[2])+" um "+str(i[3])+"\n"
-#                     print(text)
-#                 elif c == '4':
-#                     print('Du hast dich erfolgreich abgemeldet. Aufwiedersehen!')
-#                     beenden = True
-#                 else:
-#                     print('Falsche Eingabe')
-#     elif a == '2':
-#         Website.neu()
-#     elif a == '3':
-#         email = input('E-Mail: ')
-#         Website.passwort_email(email)
-#     elif a == '4':
-#         print('Aufwiedersehen!')
-#         abrechen = True
-#     else:
-#         print('Falsche Eingabe')
+
 
 
